@@ -9,22 +9,22 @@ class AddressBook(UserDict):
 
 class Record:
     def __init__(self, name, phone=None):
-        self.name = Name(name)
-        self.r_phones = Phone(phone)
+        self.name = name
+        self.phones = [phone]
 
     def add(self, new_phone):
-        self.r_phones.phone.append(new_phone)
+        self.phones.append(new_phone)
 
     def change(self, old_phone, new_phone):
-        for i, ph in enumerate(self.r_phones.phone):
+        for i, ph in enumerate(self.phones):
             if ph == old_phone:
-                self.r_phones.phone[i] = new_phone
+                self.phones[i] = new_phone
                 break
 
     def delete(self, old_phone):
-        for i, ph in enumerate(self.r_phones.phone):
+        for i, ph in enumerate(self.phones):
             if ph == old_phone:
-                self.r_phones.phone.pop(i)
+                self.phones.pop(i)
                 break
 
 
@@ -34,20 +34,32 @@ class Field:
 
 class Name(Field):
 
-    def __init__(self, name):
-        self.value = name
+    def __init__(self, value):
+        self.value = value
 
 
 class Phone(Field):
-    def __init__(self, phone=None):
-        self.value = []
-        self.value.append(phone)
+    def __init__(self, value):
+        self.value = value
 
 
-# rec1 = Record("Vasya", "11111")
-# rec2 = Record("Dima", ['22222', "333333"])
-# rec3 = Record("Jeka")
-# friends = AddressBook()
-# friends.add_record(rec1)
-# friends.add_record(rec2)
-# friends.add_record(rec3)
+if __name__ == '__main__':
+    name = Name('Bill')
+    phone = Phone('1234567890')
+    rec = Record(name, phone)
+    ab = AddressBook()
+    ab.add_record(rec)
+
+    name = Name('Bill')
+    phone = Phone('1234567890')
+    rec = Record(name, phone)
+    ab = AddressBook()
+    ab.add_record(rec)
+
+    assert isinstance(ab['Bill'], Record)
+    assert isinstance(ab['Bill'].name, Name)
+    assert isinstance(ab['Bill'].phones, list)
+    assert isinstance(ab['Bill'].phones[0], Phone)
+    assert ab['Bill'].phones[0].value == '1234567890'
+
+    print('All Ok)')
